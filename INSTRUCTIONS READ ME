@@ -1,0 +1,205 @@
+Arman Koosha, Matteo Magan, and Adam Pavie
+Command list:
+Start camera -> python3 cardScanner/cardScan.py
+
+Home directory:
+bobcaticus
+
+READ INSTUCTIONS FULLY BEFORE RUNNING PROGRAM TO AVOID MESSING UP AND LOSING ALL YOUR WORK
+
+Instructions:
+**To stop the program at any point in the procces, press CNTRL + C**
+	1) Enter the start camera command into the command terminal
+	2) Enter the home directory "bobcaticus" OR the name of your home directory folder ie: "home" (do not enter the directory name in quotations)
+	3) Follow the program promts and fill in the required information
+		Batch size = amount of cards you want to scan
+		Picture set number = the file number for the card set ie: the nth folder in Card_Pics_n which the pictures are entering
+		Following information will then auto fill
+			Batch size 
+			Picture set number
+		(these will auto fill to the values you set before when it asked you, think of it as the program just repeating back what you told it)
+	4) It will ask you if you want to take a photo y for yes n for no
+	5) Once you take the photo it will say "Image 'n' captured"
+	6) Keep typing 'y' until all photos are taken
+	7) It will ask "Would you like to input from an existing folder (y/n)" 
+			If you have already made your set folder then input y
+			if you havent made the folder, make the folder INSIDE the cardScanner folder. It MUST be named Card_Pics_n with n being the set number you wish to record as a whole integer ie: Card_Pics_12
+	8) It will then prompt you with a picture of your first scan to select the area you'd like to read. Follow the following setps to ensure the scan works
+		1) make sure you've used the physical guide to insure that all the numbers you'd like to scan are in the same place
+		2) Select the numbers by clicking and holding the left mouse on the top left corner numbers, then drag the mouse to the bottom right corner. Wait a couple seconds and a green rectangle will apear outlining the box you've made, the program will only read things in this box
+		3) once you've selected the area you wish to scan, go back to the terminal, and input anything other than "n" into the program, this will close the area select tool and begin scanning all the cards
+		4) DO NOT GO FROM BOTTOM RIGHT TO TOP LEFT WHEN SELECTING AREA...ALWAYS GO FROM TOP LEFT TO BOTTOM RIGHT AS THIS WOULD CRASH THE PROGRAM
+	9) Once all the cards are scanned, you will be given a list of all the numbers and the order in which they were scanned, read through these and look for any obvious inconsitencies
+	10) You will be prompted to tell the code any numbers that were wrong, input the card numbers that were incorrect into the terminal to manually fix them (At this point it may be faster to edit it in the CSV once made)
+	11) Once youve finished the error checking, let the program run for a second and then open the "Card_Log.csv" file to see the list of serial numbers. 
+		If you dont see the numbers youve scanned here, reload the card log DO NOT OVERWRITE
+	12) You will be asked if you want to scan another set, if y, the program wil repeat form Step 3, if in "Goodbye"
+	
+	
+If the code breaks or there are frequent errors, before trouble shooting, look through notes to see what has already been tried. 
+When trouble shooting, mark changes and notes by date and name as shown below:
+
+
+
+
+
+
+Notes for testing 2023 June 23 10:22 start.
+	People involved: Matteo Magan + Arman Koosha (and later Adam Pavie)
+		Notes taken: 
+		When trying to run the initial code there was no proper list of commands
+		Afer finding the command that works the following error apeared: "__main__" module is not defined
+		After defining "main" as all the functions above except for: looper(), we were able to succesfully run the cardScanner code
+		No clear def for following:
+			What "batch size" means
+			What "pic set" means over "pic set number"
+		Figured out that home directory is not named "pi" but named "bobcaticus" which should have been obvious from the home symbol on the file
+		
+		Current error after notes taken: 
+FileNotFoundError: [Errno 2] No such file or directory: 'Card_Pics_1/card_1.jpg'
+Segmentation fault
+
+		Command line for resulting error:
+Enter your pi home directory: /home/bobcaticus/cardScanner/cardPics_8
+Enter the card batch size you wish to record: 1
+Enter picture set number: 16
+Batch size: 1
+Picture set number: 16
+Enter the card batch size you wish to record: 1
+Enter picture set number: 1
+Take a photo (y/n): y
+
+[0:52:54.411118431] [1887]  INFO Camera camera.cpp:1028 configuring streams: (0) 640x480-XBGR8888
+[0:52:54.419267691] [1883]  INFO RPI raspberrypi.cpp:851 Sensor: /base/soc/i2c0mux/i2c@1/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10 - Selected unicam format: 1536x864-pBAA
+[0:52:55.569912936] [1887]  INFO Camera camera.cpp:1028 configuring streams: (0) 4608x2592-BGR888
+[0:52:55.571035178] [1883]  INFO RPI raspberrypi.cpp:851 Sensor: /base/soc/i2c0mux/i2c@1/imx708@1a - Selected sensor format: 4608x2592-SBGGR10_1X10 - Selected unicam format: 4608x2592-pBAA
+
+
+Traceback (most recent call last):
+  File "/home/bobcaticus/cardScanner/cardScan.py", line 295, in <module>
+    main()
+  File "/home/bobcaticus/cardScanner/cardScan.py", line 280, in main
+    takePicture()
+  File "/home/bobcaticus/cardScanner/cardScan.py", line 87, in takePicture
+    picam2.start_and_capture_file("Card_Pics_" + str(picSet) + "/" + cardPicList[i]) # Saves images to dedicated image directory for each hard drive log
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 1612, in start_and_capture_file
+    self.start_and_capture_files(name=name, initial_delay=delay, preview_mode=preview_mode,
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 1570, in start_and_capture_files
+    self.switch_mode_and_capture_file(capture_mode, name.format(i))
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 1235, in switch_mode_and_capture_file
+    return self.dispatch_functions(functions, wait, signal_function)
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 1166, in dispatch_functions
+    return job.get_result() if wait else job
+  File "/usr/lib/python3/dist-packages/picamera2/job.py", line 77, in get_result
+    return self._future.result()
+  File "/usr/lib/python3.9/concurrent/futures/_base.py", line 440, in result
+    return self.__get_result()
+  File "/usr/lib/python3.9/concurrent/futures/_base.py", line 389, in __get_result
+    raise self._exception
+  File "/usr/lib/python3/dist-packages/picamera2/job.py", line 47, in execute
+    done, result = self._functions[0]()
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 1229, in capture_and_switch_back_
+    _, result = self.capture_file_(file_output, name, format=format)
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 1173, in capture_file_
+    request.save(name, file_output, format=format)
+  File "/usr/lib/python3/dist-packages/picamera2/request.py", line 166, in save
+    return self.picam2.helpers.save(self.make_image(name), self.get_metadata(), file_output, format)
+  File "/usr/lib/python3/dist-packages/picamera2/request.py", line 276, in save
+    img.save(file_output, **keywords)
+  File "/usr/lib/python3/dist-packages/PIL/Image.py", line 2161, in save
+    fp = builtins.open(filename, "w+b")
+
+	Issue Summation: How to direct to folders
+	
+	Troubleshooting and further testing:
+	
+	Inclde the full directory towards the folder "Card_Pics_1" with every inputed param set to 1
+	then make a new file called "card_1.jpg" 
+	This will take the photo and place it on the card.
+	
+		Ideas for future:
+			Getting rid of the "card_1.jpg" 
+			Trying to move the folder location
+			
+				Current inputs:
+				Enter your pi home directory: /home/bobcaticus/Card_Pics_1/card_1.jpg
+Enter the card batch size you wish to record: 1
+Enter picture set number: 1
+Batch size: 1
+Picture set number: 1
+Enter the card batch size you wish to record: 1
+Enter picture set number: 1
+Take a photo (y/n): y
+
+				Current errors:
+				Traceback (most recent call last):
+  File "/home/bobcaticus/cardScanner/cardScan.py", line 295, in <module>
+    main()
+  File "/home/bobcaticus/cardScanner/cardScan.py", line 281, in main
+    textImageProcessor(imgLocation)
+NameError: name 'imgLocation' is not defined
+
+Current progress:
+1 immage captured
+
+
+Further notes:
+	Getting rid of the "card_1.jpg"  was succesful (same params)
+		
+		
+Solutions found and problems that remain:
+	Solutions:
+		The previous error was due to only putting in 1 card in the card batch size, the program crashes once it is done taking pictures (unless told otherwised we'll leave it like this)
+		The program was asking for double the set numbers and batch size because we put the command in main without realizing it was already run on the top. removing it from main fixed this problem
+		Multiple card picures can be taken as long as the pathway to the directory is set as /home/bobcaticus/Card_Pics_1/card_1.jpg and there is a premade batch folder (Card_Pics_n) 
+			Notes: the pictures will start at the number defined in the pathway at "card_n.jpg" where n is the start and override everything they intersect with
+				ie: if there are immages from card_1 to card_10 and the program is run with card_5 as the path with a batch size of 5, cards 5 though 10 will be overridden
+				
+	Problems:
+		No scanning is actually happening, the pictures are being taken however the card numbers arent being scanned, read, or logged
+		The program turns off the camera after every picture is taken with results in the following problems:
+			The live feed for the cards is cut off
+			The camera doesnt have enought time to focus from the time between when the y command is entered and when the picture is actually taken
+			
+	Ideas for solutions to the problems mentioned above:
+		For the scanning issues, we will have to keep bashing our head against the wall for now, we're looking into the refrenced code to see how those work but most of that code isn't in python. At the moment we're looking into how immagelocation works and to see if that may be the key to the issue, going through every command from the top down and trouble shooting it.
+		For the live feed issue, we will try experimenting with the sleep tick or find the process that turns on the camera and set it to run indeffinitly until the program is closed, however that might create other issues so that is a last resort. 
+		
+	Instructions on how to use command as far as we know:
+		1) put the initial command listed at the top of this file into the terminal
+		2) paste in the directory pathway listed above with modifications as per described in solutions for desired result 
+		3) set how many picutes you want to take
+		4) make sure you have the folder in the right location (as mentioned above)
+		5) type y to take the next picture until done
+			
+			Notes on instructions: typing anything other than y into the terminal between pictures will stop the program
+			
+	Solutions to previous problems:
+		we got rid of the the command to take the pictues the function told the camera to start which made the made camera reboot at every picture
+			Result: no blurry immages and constant camera feed
+
+Called in the troops (the general) Adam Pavie to guide us through debug and understanding the code:
+
+Following changes were made: 
+	He changed the paths that the program follows to understand the directory, with the new setup the "home directory" becomes only the username "bobcaticus" 
+	He changed the order of operations to fix the problem that was happening with looping. (we were not aware that there was a problem with looping because we didn't get that far
+	He went through each of the lines that previously caused errors and debuged them as well as explaining how they worked
+	He did 4 hours of work in 40 minutes
+	
+	Instructions based on the code post Adam:
+		Run command: python3 cardScanner/cardScan.py
+		home directory: bobcaticus
+			From there as far as tested the following now work which didnt previously
+		Crashing after finishing photos
+		Saving photos in the right location
+		the (imgLocation) issue
+		
+		Other notes:
+		it seems like the scanning and number reading is now also working however we havent tested that yet. We are assuming this because unlike before, the program did not crash after it completed the command set. 
+		Further testing will be done tommorow where we can hopefully finish the code and then write an instruction manual
+		
+Note log 1 June 23 2023 17:58 fin.
+June 26, 2023:
+The code is working pretty great (almost perfect) however there are a couple of inconsistencies. 5 tests were ran in which two of the times the program couldn't scan the serial numbers. Other than that all of the parts are working now.  
+June 26, 2023:
+Finished as well as changed some parts of the code to give more leeway (using Try, Except) as a crash in the later stages of the program could waste significant time
